@@ -35,7 +35,7 @@ export default function Page() {
     </p>
     {/* Social and Professional Links */}
     <p>
-      Connect with me on <a href="[LinkedIn URL]" target="_blank">LinkedIn</a> or explore my code repositories on <a href="[GitHub URL]" target="_blank">GitHub</a> to see my work in action.
+      Connect with me on <a href="https://www.linkedin.com/in/emmanuelyee/" target="_blank">LinkedIn</a> or explore my code repositories on <a href="[GitHub URL]" target="_blank">GitHub</a> to see my work in action.
     </p>
     {/* Call to Action */}
     <p>
