@@ -23,11 +23,11 @@ export default function Page() {
   <div className="prose prose-neutral dark:prose-invert">
     {/* Introduction Paragraph */}
     <p>
-      Welcome to my portfolio! I’m Emmanuel Yee, a [Your Profession/Title] passionate about [Key Interest/Industry]. Here you’ll find a curated selection of my work, projects, and the creative process behind my innovations.
+      Welcome to my portfolio! I’m Emmanuel Yee, a student passionate about electronics and Digital Citizenship. Here you’ll find a curated selection of my work, projects, and the creative process behind my innovations.
     </p>
     {/* About Your Work & Skills */}
     <p>
-      In this space, I showcase my expertise in [List Key Skills or Technologies] and my journey through various projects. Whether it’s design, development, or a blend of both, my goal is to deliver quality and innovation in every endeavor.
+      In this space, I showcase my expertise in Electronics, Coding, Leadership and my journey through various projects. Whether it’s design, development, or a blend of both, my goal is to deliver quality and innovation in every endeavor.
     </p>
     {/* Project Highlights and Case Studies */}
     <p>
@@ -36,10 +36,6 @@ export default function Page() {
     {/* Social and Professional Links */}
     <p>
       Connect with me on <a href="https://www.linkedin.com/in/emmanuelyee/" target="_blank">LinkedIn</a> or explore my code repositories on <a href="[GitHub URL]" target="_blank">GitHub</a> to see my work in action.
-    </p>
-    {/* Call to Action */}
-    <p>
-      Interested in collaborating or learning more? Feel free to <a href="[Contact URL]" target="_blank">get in touch</a> or follow my updates on <a href={socialLinks.twitter} target="_blank">Twitter</a>.
     </p>
     {/* Closing / Additional Info */}
     <p>
