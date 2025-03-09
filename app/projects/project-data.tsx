@@ -7,15 +7,15 @@ export interface Project {
 
 export const projects: Project[] = [
   {
-    title: "Mithril AI",
-    year: 2024,
-    description: "Open science AI resarch lab",
-    url: "https://github.com/mithrilai",
+    title: "Mobile Legends Drafting Helper",
+    year: 2025,
+    description: "A tool to help players draft their team in Mobile Legends, because I love MLBB",
+    url: "https://mobile-legends-drafting.percyjackson.workers.dev/",
   },
   {
-    title: "OpenDeepLearning",
-    year: 2023,
-    description: "Open source AI education resources",
-    url: "https://opendeeplearning.xyz/",
+    title: "Motivational-Os",
+    year: 2025,
+    description: "Keeps track of days before O-lvls and helps you stay motivated",
+    url: "https://motivational-olvl.percyjackson.workers.dev/",
   },
 ];
