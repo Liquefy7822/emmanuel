@@ -5,7 +5,7 @@ export default function Page() {
   return (
     <section>
   {/* Profile Image linking to your social (e.g., Twitter) */}
-  <a href={socialLinks.twitter} target="_blank">
+  <a href={socialLinks.instagram} target="_blank">
     <Image
       src="/profile.png"
       alt="Profile photo"
