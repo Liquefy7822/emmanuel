@@ -17,7 +17,7 @@ export default function Photos() {
           {
             src: "/photos/photo1.jpg",
             alt: "Roman columns",
-            href: "https://drive.google.com/file/d/1uqo3OIhmOSwAzWuQC7X13fGx4YmQYFh2/view?usp=drive_link",
+            href: "https://drive.google.com/file/d/1uqo3OIhmOSwAzWuQC7X13fGx4YmQYFh2/preview",
           },
           {
             src: "/photos/photo2.jpg",
