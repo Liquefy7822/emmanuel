@@ -17,12 +17,12 @@ export default function Photos() {
           {
             src: "/photos/photo1.jpg",
             alt: "Roman columns",
-            href: "https://drive.google.com/file/d/1uqo3OIhmOSwAzWuQC7X13fGx4YmQYFh2/preview",
+            href: "https://drive.google.com/uc?export=view&id=1uqo3OIhmOSwAzWuQC7X13fGx4YmQYFh2",
           },
           {
             src: "/photos/photo2.jpg",
             alt: "Big Ben",
-            href: "https://unsplash.com/photos/big-ben-london-MdJq0zFUwrw?utm_content=creditShareLink&utm_medium=referral&utm_source=unsplash",
+            href: "https://drive.google.com/uc?export=view&id=13qM8A_BpM2Ov9f_dU6vsaHy4aEQka_ba",
           },
           {
             src: "/photos/photo3.jpg",
