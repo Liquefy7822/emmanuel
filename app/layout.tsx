@@ -9,6 +9,7 @@ import Footer from "./components/footer";
 import { ThemeProvider } from "./components/theme-switch";
 import { metaData } from "./config";
 
+
 export const metadata: Metadata = {
   metadataBase: new URL(metaData.baseUrl),
   title: {
