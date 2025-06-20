@@ -6,7 +6,6 @@ export const metadata: Metadata = {
   title: "Photos",
   description: "My Photos",
 };
-
 export default function Photos() {
   return (
     <section>
@@ -27,12 +26,12 @@ export default function Photos() {
           {
             src: "/photos/photo3.jpg",
             alt: "Ranking top 10 in my first frisbee tournament",
-            href: "https://drive.google.com/drive-viewer/AKGpihZRbroMTAgvhzG6R4_efZqcRmMB1PRLqJKIqXe9UUvJ0uM1IeZKtksxLL8Tex8_H1A0uPYf98-_90P2sjyDkVINj8FXBsmlDno=s1600-rw-v1?source=screenshot.guru"> <img src="https://drive.google.com/drive-viewer/AKGpihZRbroMTAgvhzG6R4_efZqcRmMB1PRLqJKIqXe9UUvJ0uM1IeZKtksxLL8Tex8_H1A0uPYf98-_90P2sjyDkVINj8FXBsmlDno=s1600-rw-v1",
+            href: "https://drive.google.com/uc?export=view&id=1uqo3OIhmOSwAzWuQC7X13fGx4YmQYFh2"
           },
           {
             src: "/photos/photo4.jpg",
             alt: "At the Launch of SG SMART Nation 2.0",
-            href: "https://drive.google.com/drive-viewer/AKGpihbRUjbs1qtie1lcQYB1qvpcp-3fG9gnN01GbIGUHrRbBczhFpotjq4zvo-wSmPLVCQGQGVj2lkqOmEi5HF0JgnrAAuju5Is3NQ=s1600-rw-v1?source=screenshot.guru"> <img src="https://drive.google.com/drive-viewer/AKGpihbRUjbs1qtie1lcQYB1qvpcp-3fG9gnN01GbIGUHrRbBczhFpotjq4zvo-wSmPLVCQGQGVj2lkqOmEi5HF0JgnrAAuju5Is3NQ=s1600-rw-v1",
+            href: "https://drive.google.com/uc?export=view&id=13qM8A_BpM2Ov9f_dU6vsaHy4aEQka_ba"
           },
           {
             src: "/photos/photo5.jpg",
