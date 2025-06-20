@@ -3,6 +3,17 @@ import { getBlogPosts } from "app/lib/posts";
 import { metaData } from "app/config";
 import { NextResponse } from "next/server";
 
+// Helper function to safely parse dates
+const safeDate = (dateString?: string): Date => {
+  if (!dateString) return new Date();
+  try {
+    const date = new Date(dateString);
+    return isNaN(date.getTime()) ? new Date() : date;
+  } catch {
+    return new Date();
+  }
+};
+
 export async function generateStaticParams() {
   return [
     { format: "rss.xml" },
@@ -47,24 +58,38 @@ export async function GET(
 
   const allPosts = await getBlogPosts();
 
-  allPosts.forEach((post) => {
-    const postUrl = `${BaseUrl}blog/${post.slug}`;
-    const categories = post.metadata.tags
-      ? post.metadata.tags.split(",").map((tag) => tag.trim())
-      : [];
+  allPosts
+    .filter(post => post.metadata && post.slug) // Filter out posts with missing metadata or slug
+    .forEach((post) => {
+      try {
+        const postUrl = `${BaseUrl}blog/${post.slug}`;
+        const categories = post.metadata.tags && typeof post.metadata.tags === 'string'
+          ? post.metadata.tags.split(",").map((tag) => tag.trim()).filter(Boolean)
+          : [];
 
-    feed.addItem({
-      title: post.metadata.title,
-      id: postUrl,
-      link: postUrl,
-      description: post.metadata.summary,
-      category: categories.map((tag) => ({
-        name: tag,
-        term: tag,
-      })),
-      date: new Date(post.metadata.publishedAt),
+        // Ensure required fields have fallbacks
+        const title = post.metadata.title || 'Untitled Post';
+        const summary = post.metadata.summary || '';
+        const publishedDate = safeDate(post.metadata.publishedAt);
+
+        feed.addItem({
+          title,
+          id: postUrl,
+          link: postUrl,
+          description: summary,
+          ...(categories.length > 0 && {
+            category: categories.map((tag) => ({
+              name: tag,
+              term: tag,
+            })),
+          }),
+          date: publishedDate,
+        });
+      } catch (error) {
+        console.error(`Error processing post ${post.slug}:`, error);
+        // Skip this post if there's an error
+      }
     });
-  });
 
   const responseMap: Record<string, { content: string; contentType: string }> =
     {

@@ -5,24 +5,52 @@ type Metadata = {
   title: string;
   publishedAt: string;
   summary: string;
-  tags: string;
+  tags?: string;
   image?: string;
+  [key: string]: any; // Allow for additional properties
 };
 
 function parseFrontmatter(fileContent: string) {
-  let frontmatterRegex = /---\s*([\s\S]*?)\s*---/;
-  let match = frontmatterRegex.exec(fileContent);
-  let frontMatterBlock = match![1];
-  let content = fileContent.replace(frontmatterRegex, "").trim();
-  let frontMatterLines = frontMatterBlock.trim().split("\n");
-  let metadata: Partial<Metadata> = {};
+  const frontmatterRegex = /---\s*([\s\S]*?)\s*---/;
+  const match = frontmatterRegex.exec(fileContent);
+  
+  if (!match || !match[1]) {
+    console.warn('No frontmatter found in post');
+    return { 
+      metadata: { 
+        title: 'Untitled Post', 
+        publishedAt: new Date().toISOString(),
+        summary: '',
+        tags: ''
+      }, 
+      content: fileContent.trim() 
+    };
+  }
+
+  const frontMatterBlock = match[1];
+  const content = fileContent.replace(frontmatterRegex, "").trim();
+  const frontMatterLines = frontMatterBlock.trim().split("\n");
+  const metadata: Partial<Metadata> = {};
 
   frontMatterLines.forEach((line) => {
-    let [key, ...valueArr] = line.split(": ");
-    let value = valueArr.join(": ").trim();
-    value = value.replace(/^['"](.*)['"]$/, "$1"); 
-    metadata[key.trim() as keyof Metadata] = value;
+    const separatorIndex = line.indexOf(':');
+    if (separatorIndex === -1) return;
+    
+    const key = line.slice(0, separatorIndex).trim();
+    const value = line.slice(separatorIndex + 1).trim();
+    
+    if (key && value) {
+      // Remove surrounding quotes if present
+      const cleanValue = value.replace(/^['"](.*)['"]$/, "$1");
+      metadata[key as keyof Metadata] = cleanValue as any;
+    }
   });
+
+  // Ensure required fields have default values
+  if (!metadata.title) metadata.title = 'Untitled Post';
+  if (!metadata.publishedAt) metadata.publishedAt = new Date().toISOString();
+  if (!metadata.summary) metadata.summary = '';
+  if (!metadata.tags) metadata.tags = '';
 
   return { metadata: metadata as Metadata, content };
 }
@@ -55,26 +83,59 @@ export function getBlogPosts() {
 }
 
 export function formatDate(date: string, includeRelative = false) {
+  if (!date) return 'Unknown date';
+  
   let currentDate = new Date();
-  if (!date.includes("T")) {
-    date = `${date}T00:00:00`;
+  let targetDate: Date;
+  
+  try {
+    // Handle various date formats
+    if (date.includes('T')) {
+      targetDate = new Date(date);
+    } else if (date.includes('-')) {
+      // Handle YYYY-MM-DD format
+      targetDate = new Date(`${date}T00:00:00`);
+    } else if (date.includes('/')) {
+      // Handle MM/DD/YYYY format
+      const [month, day, year] = date.split('/').map(Number);
+      targetDate = new Date(year, month - 1, day);
+    } else {
+      // Fallback to current date if format is unknown
+      targetDate = new Date();
+    }
+    
+    // If date is invalid, use current date
+    if (isNaN(targetDate.getTime())) {
+      targetDate = new Date();
+    }
+  } catch (e) {
+    console.error('Error parsing date:', date, e);
+    targetDate = new Date();
   }
-  let targetDate = new Date(date);
 
-  let yearsAgo = currentDate.getFullYear() - targetDate.getFullYear();
-  let monthsAgo = currentDate.getMonth() - targetDate.getMonth();
-  let daysAgo = currentDate.getDate() - targetDate.getDate();
+  if (!includeRelative) {
+    return targetDate.toLocaleString('en-us', {
+      month: 'short',
+      day: 'numeric',
+      year: 'numeric',
+    });
+  }
 
-  let formattedDate = "";
-
-  if (yearsAgo > 0) {
-    formattedDate = `${yearsAgo}y ago`;
-  } else if (monthsAgo > 0) {
-    formattedDate = `${monthsAgo}mo ago`;
-  } else if (daysAgo > 0) {
-    formattedDate = `${daysAgo}d ago`;
+  // Calculate relative time
+  const diffInMs = currentDate.getTime() - targetDate.getTime();
+  const diffInDays = Math.floor(diffInMs / (1000 * 60 * 60 * 24));
+  
+  let formattedDate = '';
+  if (diffInDays >= 365) {
+    const years = Math.floor(diffInDays / 365);
+    formattedDate = `${years}y ago`;
+  } else if (diffInDays >= 30) {
+    const months = Math.floor(diffInDays / 30);
+    formattedDate = `${months}mo ago`;
+  } else if (diffInDays > 0) {
+    formattedDate = `${diffInDays}d ago`;
   } else {
-    formattedDate = "Today";
+    formattedDate = 'Today';
   }
 
   let fullDate = targetDate.toLocaleString("en-us", {

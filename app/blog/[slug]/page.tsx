@@ -1,24 +1,65 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { CustomMDX } from "app/components/mdx";
-import { formatDate, getBlogPosts } from "app/lib/posts";
+import { formatDate, getBlogPosts, type Metadata as PostMetadata } from "app/lib/posts";
 import { metaData } from "app/config";
 
-export async function generateStaticParams() {
-  let posts = getBlogPosts();
+interface BlogPostProps {
+  params: {
+    slug: string;
+  };
+}
 
-  return posts.map((post) => ({
-    slug: post.slug,
-  }));
+// Helper function to safely get post metadata
+function getPostMetadata(slug: string) {
+  try {
+    const post = getBlogPosts().find((post) => post.slug === slug);
+    if (!post) return null;
+
+    // Ensure required fields have default values
+    const metadata: PostMetadata = {
+      title: post.metadata.title || 'Untitled Post',
+      publishedAt: post.metadata.publishedAt || new Date().toISOString(),
+      summary: post.metadata.summary || '',
+      tags: post.metadata.tags || '',
+      ...post.metadata, // Spread any additional metadata
+    };
+
+    return {
+      ...post,
+      metadata,
+    };
+  } catch (error) {
+    console.error(`Error getting post ${slug}:`, error);
+    return null;
+  }
+}
+
+export async function generateStaticParams() {
+  try {
+    const posts = getBlogPosts();
+    return posts.map((post) => ({
+      slug: post.slug,
+    }));
+  } catch (error) {
+    console.error('Error generating static params for blog posts:', error);
+    return [];
+  }
 }
 
 export async function generateMetadata({
   params,
-}): Promise<Metadata | undefined> {
-  const { slug } = await params;
-  let post = getBlogPosts().find((post) => post.slug === slug);
+}: {
+  params: { slug: string };
+}): Promise<Metadata> {
+  const { slug } = params;
+  const post = getPostMetadata(slug);
+  
   if (!post) {
-    return;
+    return {
+      title: 'Post Not Found',
+      description: 'The requested blog post could not be found.',
+    };
   }
 
   let {
@@ -55,13 +96,31 @@ export async function generateMetadata({
   };
 }
 
-export default async function Blog({ params }) {
-  const { slug } = await params;
-  let post = getBlogPosts().find((post) => post.slug === slug);
+export default async function Blog({ params }: BlogPostProps) {
+  const { slug } = params;
+  const post = getPostMetadata(slug);
 
   if (!post) {
     notFound();
   }
+
+  // Safely generate JSON-LD data
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    headline: post.metadata.title || 'Untitled Post',
+    datePublished: post.metadata.publishedAt || new Date().toISOString(),
+    dateModified: post.metadata.updatedAt || post.metadata.publishedAt || new Date().toISOString(),
+    description: post.metadata.summary || '',
+    image: post.metadata.image
+      ? `${metaData.baseUrl}${post.metadata.image.startsWith('/') ? '' : '/'}${post.metadata.image}`
+      : `${metaData.baseUrl}/og?title=${encodeURIComponent(post.metadata.title || 'Blog Post')}`,
+    url: `${metaData.baseUrl}/blog/${post.slug}`,
+    author: {
+      "@type": "Person",
+      name: metaData.name || 'Author',
+    },
+  };
 
   return (
     <section>
@@ -69,30 +128,15 @@ export default async function Blog({ params }) {
         type="application/ld+json"
         suppressHydrationWarning
         dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "BlogPosting",
-            headline: post.metadata.title,
-            datePublished: post.metadata.publishedAt,
-            dateModified: post.metadata.publishedAt,
-            description: post.metadata.summary,
-            image: post.metadata.image
-              ? `${metaData.baseUrl}${post.metadata.image}`
-              : `/og?title=${encodeURIComponent(post.metadata.title)}`,
-            url: `${metaData.baseUrl}/blog/${post.slug}`,
-            author: {
-              "@type": "Person",
-              name: metaData.name,
-            },
-          }),
+          __html: JSON.stringify(jsonLd),
         }}
       />
       <h1 className="title mb-3 font-medium text-2xl tracking-tight">
-        {post.metadata.title}
+        {post.metadata.title || 'Untitled Post'}
       </h1>
       <div className="flex justify-between items-center mt-2 mb-8 text-medium">
         <p className="text-sm text-neutral-600 dark:text-neutral-400">
-          {formatDate(post.metadata.publishedAt)}
+          {formatDate(post.metadata.publishedAt || new Date().toISOString())}
         </p>
       </div>
       <article className="prose prose-quoteless prose-neutral dark:prose-invert">
