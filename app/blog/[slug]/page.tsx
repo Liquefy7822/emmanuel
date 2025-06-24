@@ -1,7 +1,7 @@
-import type { Metadata } from "next";
+import type { Metadata as NextMetadata } from "next";
 import { notFound } from "next/navigation";
 import { CustomMDX } from "app/components/mdx";
-import { formatDate, getBlogPosts, type BlogPost, type Metadata as PostMetadata } from "app/lib/posts";
+import { formatDate, getBlogPosts, type BlogPost, type Metadata } from "app/lib/posts";
 import { metaData } from "app/config";
 
 interface BlogPostProps {
@@ -52,7 +52,7 @@ export async function generateMetadata({
   params,
 }: {
   params: { slug: string };
-}): Promise<Metadata> {
+}): Promise<NextMetadata> {
   const { slug } = params;
   const post = getPost(slug);
   
