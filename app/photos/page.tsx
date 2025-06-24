@@ -14,27 +14,27 @@ export default function Photos() {
         columns={3}
         images={[
           {
-            src: "/photos/photo1.jpg",
+            src: "https://drive.google.com/uc?export=view&id=1uqo3OIhmOSwAzWuQC7X13fGx4YmQYFh2",
             alt: "With my class",
             href: "https://drive.google.com/uc?export=view&id=1uqo3OIhmOSwAzWuQC7X13fGx4YmQYFh2",
           },
           {
-            src: "/photos/photo2.jpg",
+            src: "https://drive.google.com/uc?export=download&id=13qM8A_BpM2Ov9f_dU6vsaHy4aEQka_ba",
             alt: "Pitching our solution at SIT",
-            href: "https://drive.google.com/uc?export=view&id=13qM8A_BpM2Ov9f_dU6vsaHy4aEQka_ba",
+            href: "https://drive.google.com/uc?export=download&id=13qM8A_BpM2Ov9f_dU6vsaHy4aEQka_ba",
           },
           {
-            src: "/photos/photo3.jpg",
+            src: "https://drive.google.com/uc?export=download&id=1ilRA2BqB2TbQ1Iy5W6Vx7ABq-sGVdfAA", // Replace with actual image ID
             alt: "Ranking top 10 in my first frisbee tournament",
-            href: "https://drive.google.com/drive-viewer/AKGpihZ_7YbzSG-flvR4fp9QszHW-krRK_iGx-o4CiGMtj7qQ_wXjWJirXl520VtulLIk_zCA6r9nWVYFWVzxtbQTXUmrOkN2vhLMXs=s1600-rw-v1"
+            href: "https://drive.google.com/uc?export=download&id=1ilRA2BqB2TbQ1Iy5W6Vx7ABq-sGVdfAA" // Replace with actual image ID
           },
           {
-            src: "/photos/photo4.jpg",
+            src: "https://drive.google.com/uc?export=download&id=1DxwmNPoGSOdoCj1h5S3oh7iB2_C-xT0-", // Replace with actual image ID
             alt: "At the Launch of SG SMART Nation 2.0",
-            href: "https://drive.google.com/drive-viewer/AKGpihbRUjbs1qtie1lcQYB1qvpcp-3fG9gnN01GbIGUHrRbBczhFpotjq4zvo-wSmPLVCQGQGVj2lkqOmEi5HF0JgnrAAuju5Is3NQ=s1600-rw-v1"
+            href: "https://drive.google.com/uc?export=download&id=1DxwmNPoGSOdoCj1h5S3oh7iB2_C-xT0-" // Replace with actual image ID
           },
           {
-            src: "/photos/photo5.jpg",
+            src: "https://images.unsplash.com/photo-1564507592333-d606afee0e0c?w=800&auto=format&fit=crop&q=80",
             alt: "Taj Mahal",
             href: "https://unsplash.com/photos/taj-mahal-india-IPlPkWPJ2fo",
           },
