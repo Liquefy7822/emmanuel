@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { CustomMDX } from "app/components/mdx";
-import { formatDate, getBlogPosts, type Metadata as PostMetadata } from "app/lib/posts";
+import { formatDate, getBlogPosts, type BlogPost, type Metadata as PostMetadata } from "app/lib/posts";
 import { metaData } from "app/config";
 
 interface BlogPostProps {
@@ -10,10 +10,10 @@ interface BlogPostProps {
   };
 }
 
-// Helper function to safely get post metadata
-function getPostMetadata(slug: string) {
+// Helper function to safely get post data
+function getPost(slug: string): BlogPost | null {
   try {
-    const post = getBlogPosts().find((post) => post.slug === slug);
+    const post = getBlogPosts().find((p) => p.slug === slug);
     if (!post) return null;
 
     // Ensure required fields have default values
@@ -28,6 +28,7 @@ function getPostMetadata(slug: string) {
     return {
       ...post,
       metadata,
+      content: post.content || '',
     };
   } catch (error) {
     console.error(`Error getting post ${slug}:`, error);
@@ -53,7 +54,7 @@ export async function generateMetadata({
   params: { slug: string };
 }): Promise<Metadata> {
   const { slug } = params;
-  const post = getPostMetadata(slug);
+  const post = getPost(slug);
   
   if (!post) {
     return {
@@ -98,7 +99,7 @@ export async function generateMetadata({
 
 export default async function Blog({ params }: BlogPostProps) {
   const { slug } = params;
-  const post = getPostMetadata(slug);
+  const post = getPost(slug);
 
   if (!post) {
     notFound();

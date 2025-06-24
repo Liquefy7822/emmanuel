@@ -1,5 +1,5 @@
 import { Feed } from "feed";
-import { getBlogPosts } from "app/lib/posts";
+import { getBlogPosts, type BlogPost } from "app/lib/posts";
 import { metaData } from "app/config";
 import { NextResponse } from "next/server";
 
@@ -58,38 +58,51 @@ export async function GET(
 
   const allPosts = await getBlogPosts();
 
-  allPosts
-    .filter(post => post.metadata && post.slug) // Filter out posts with missing metadata or slug
-    .forEach((post) => {
-      try {
-        const postUrl = `${BaseUrl}blog/${post.slug}`;
-        const categories = post.metadata.tags && typeof post.metadata.tags === 'string'
-          ? post.metadata.tags.split(",").map((tag) => tag.trim()).filter(Boolean)
-          : [];
-
-        // Ensure required fields have fallbacks
-        const title = post.metadata.title || 'Untitled Post';
-        const summary = post.metadata.summary || '';
-        const publishedDate = safeDate(post.metadata.publishedAt);
-
-        feed.addItem({
-          title,
-          id: postUrl,
-          link: postUrl,
-          description: summary,
-          ...(categories.length > 0 && {
-            category: categories.map((tag) => ({
-              name: tag,
-              term: tag,
-            })),
-          }),
-          date: publishedDate,
-        });
-      } catch (error) {
-        console.error(`Error processing post ${post.slug}:`, error);
-        // Skip this post if there's an error
+  // Process each post with error handling
+  allPosts.forEach((post: BlogPost) => {
+    try {
+      // Skip posts without required fields
+      if (!post.slug || !post.metadata || !post.metadata.title) {
+        console.warn(`Skipping post with missing required fields: ${post.slug || 'unknown'}`);
+        return;
       }
-    });
+
+      const postUrl = `${BaseUrl}blog/${post.slug}`;
+      
+      // Safely parse tags
+      const categories = typeof post.metadata.tags === 'string' 
+        ? post.metadata.tags.split(",").map(tag => tag.trim()).filter(Boolean)
+        : [];
+
+      // Safely parse the date
+      let postDate: Date;
+      try {
+        postDate = new Date(post.metadata.publishedAt || new Date().toISOString());
+        if (isNaN(postDate.getTime())) {
+          postDate = new Date();
+        }
+      } catch (e) {
+        postDate = new Date();
+      }
+
+      // Add item to feed
+      feed.addItem({
+        title: post.metadata.title,
+        id: postUrl,
+        link: postUrl,
+        description: post.metadata.summary || '',
+        date: postDate,
+        ...(categories.length > 0 && {
+          category: categories.map(tag => ({
+            name: tag,
+            term: tag,
+          })),
+        }),
+      });
+    } catch (error) {
+      console.error(`Error adding post to feed: ${post.slug || 'unknown'}`, error);
+    }
+  });
 
   const responseMap: Record<string, { content: string; contentType: string }> =
     {
