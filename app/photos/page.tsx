@@ -31,13 +31,13 @@ const photos: Photo[] = [
   },
   {
     src: "/photos/photo5.jpg",
-    alt: "Travel memories",
-    description: "Exploring new places and making memories"
+    alt: "Awards at SYSF 2023",
+    description: "Getting distinction at a national science competition"
   },
   {
     src: "/photos/photo6.jpg",
-    alt: "Colosseum",
-    description: "Visiting the historic Colosseum in Rome"
+    alt: "My booth at the SYSF 2023",
+    description: "Showcasing our project at the SYSF 2023"
   }
 ];
 
