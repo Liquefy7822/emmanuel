@@ -18,11 +18,11 @@ function getPost(slug: string): BlogPost | null {
 
     // Ensure required fields have default values
     const metadata: Metadata = {
+      ...post.metadata, // Spread all existing metadata first
       title: post.metadata.title || 'Untitled Post',
       publishedAt: post.metadata.publishedAt || new Date().toISOString(),
       summary: post.metadata.summary || '',
-      tags: post.metadata.tags || '',
-      ...post.metadata, // Spread any additional metadata
+      tags: post.metadata.tags || ''
     };
 
     return {
