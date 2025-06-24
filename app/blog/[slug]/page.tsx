@@ -17,7 +17,7 @@ function getPost(slug: string): BlogPost | null {
     if (!post) return null;
 
     // Ensure required fields have default values
-    const metadata: PostMetadata = {
+    const metadata: Metadata = {
       title: post.metadata.title || 'Untitled Post',
       publishedAt: post.metadata.publishedAt || new Date().toISOString(),
       summary: post.metadata.summary || '',
