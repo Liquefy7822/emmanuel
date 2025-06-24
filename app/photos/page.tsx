@@ -1,72 +1,79 @@
 import React from "react";
 import type { Metadata } from "next";
-import { ImageGrid } from "app/components/image-grid";
+import Image from "next/image";
+
+type Photo = {
+  src: string;
+  alt: string;
+  description?: string;
+};
+
+const photos: Photo[] = [
+  {
+    src: "/photos/photo1.jpg",
+    alt: "With my class",
+    description: "A memorable moment with my classmates"
+  },
+  {
+    src: "/photos/photo2.jpg",
+    alt: "Pitching our solution at SIT",
+    description: "Presenting our innovative solution at the competition"
+  },
+  {
+    src: "/photos/photo3.jpg",
+    alt: "Frisbee tournament",
+    description: "Ranking top 10 in my first frisbee tournament"
+  },
+  {
+    src: "/photos/photo4.jpg",
+    alt: "Smart Nation 2.0 Launch",
+    description: "At the Launch of SG SMART Nation 2.0"
+  },
+  {
+    src: "/photos/photo5.jpg",
+    alt: "Travel memories",
+    description: "Exploring new places and making memories"
+  },
+  {
+    src: "/photos/photo6.jpg",
+    alt: "Colosseum",
+    description: "Visiting the historic Colosseum in Rome"
+  }
+];
 
 export const metadata: Metadata = {
   title: "Photos",
-  description: "My Photos",
+  description: "A collection of my favorite moments and memories",
 };
+
 export default function Photos() {
   return (
-    <section>
-      <h1 className="mb-8 text-2xl font-medium tracking-tight">Photos</h1>
-      <ImageGrid
-        columns={3}
-        images={[
-          {
-            src: "https://drive.google.com/uc?export=view&id=1uqo3OIhmOSwAzWuQC7X13fGx4YmQYFh2",
-            alt: "With my class",
-            href: "https://drive.google.com/uc?export=view&id=1uqo3OIhmOSwAzWuQC7X13fGx4YmQYFh2",
-          },
-          {
-            src: "https://drive.google.com/uc?export=download&id=13qM8A_BpM2Ov9f_dU6vsaHy4aEQka_ba",
-            alt: "Pitching our solution at SIT",
-            href: "https://drive.google.com/uc?export=download&id=13qM8A_BpM2Ov9f_dU6vsaHy4aEQka_ba",
-          },
-          {
-            src: "https://drive.google.com/uc?export=download&id=1ilRA2BqB2TbQ1Iy5W6Vx7ABq-sGVdfAA", // Replace with actual image ID
-            alt: "Ranking top 10 in my first frisbee tournament",
-            href: "https://drive.google.com/uc?export=download&id=1ilRA2BqB2TbQ1Iy5W6Vx7ABq-sGVdfAA" // Replace with actual image ID
-          },
-          {
-            src: "https://drive.google.com/uc?export=download&id=1DxwmNPoGSOdoCj1h5S3oh7iB2_C-xT0-", // Replace with actual image ID
-            alt: "At the Launch of SG SMART Nation 2.0",
-            href: "https://drive.google.com/uc?export=download&id=1DxwmNPoGSOdoCj1h5S3oh7iB2_C-xT0-" // Replace with actual image ID
-          },
-          {
-            src: "https://images.unsplash.com/photo-1564507592333-d606afee0e0c?w=800&auto=format&fit=crop&q=80",
-            alt: "Taj Mahal",
-            href: "https://unsplash.com/photos/taj-mahal-india-IPlPkWPJ2fo",
-          },
-          {
-            src: "/photos/photo6.jpg",
-            alt: "Colosseum",
-            href: "https://unsplash.com/photos/brown-concrete-building-under-blue-sky-during-daytime-3cyBR1rIJmA?utm_content=creditShareLink&utm_medium=referral&utm_source=unsplash",
-          },
-        ]}
-      />
-
-      <ImageGrid
-        columns={2}
-        images={[
-          { src: "/photos/photo1.jpg", alt: "Roman columns" },
-          { src: "/photos/photo2.jpg", alt: "Big Ben" },
-          { src: "/photos/photo3.jpg", alt: "Sacré-Cœur Basilica" },
-          { src: "/photos/photo4.jpg", alt: "Eiffel Tower" },
-        ]}
-      />
-
-      <ImageGrid
-        columns={4}
-        images={[
-          { src: "/photos/photo1.jpg", alt: "Roman columns" },
-          { src: "/photos/photo2.jpg", alt: "Big Ben" },
-          { src: "/photos/photo3.jpg", alt: "Sacré-Cœur Basilica" },
-          { src: "/photos/photo4.jpg", alt: "Eiffel Tower" },
-          { src: "/photos/photo5.jpg", alt: "Taj Mahal" },
-          { src: "/photos/photo6.jpg", alt: "Colosseum" },
-        ]}
-      />
+    <section className="container mx-auto px-4 py-8">
+      <h1 className="mb-8 text-3xl font-bold tracking-tight text-center">Photo Gallery</h1>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        {photos.map((photo, index) => (
+          <div key={index} className="group relative overflow-hidden rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300">
+            <div className="aspect-square relative overflow-hidden">
+              <Image
+                src={photo.src}
+                alt={photo.alt}
+                width={800}
+                height={800}
+                className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                priority={index < 3} // Only preload first 3 images
+              />
+              <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-30 transition-all duration-300 flex items-end p-4">
+                <div className="text-white opacity-0 group-hover:opacity-100 transform translate-y-4 group-hover:translate-y-0 transition-all duration-300">
+                  <h3 className="font-semibold">{photo.alt}</h3>
+                  {photo.description && (
+                    <p className="text-sm opacity-90">{photo.description}</p>
+                  )}
+                </div>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
     </section>
   );
 }
