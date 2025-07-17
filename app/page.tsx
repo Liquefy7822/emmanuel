@@ -31,7 +31,7 @@ export default function Page() {
     </p>
     {/* Project Highlights and Case Studies */}
     <p>
-      Explore my work through detailed case studies and project overviews. Each project is a testament to my commitment to [Your Mission or Value Proposition]. For more details, check out my <a href="https://emmanuel-nu.vercel.app/projects" target="_blank">project portfolio</a>.
+      Explore my work through detailed case studies and project overviews. For more details, check out my <a href="https://emmanuel-nu.vercel.app/projects" target="_blank">project portfolio</a>.
     </p>
     {/* Social and Professional Links */}
     <p>
