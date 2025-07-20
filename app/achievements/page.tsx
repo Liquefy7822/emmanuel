@@ -18,7 +18,7 @@ const achievements: Achievement[] = [
     title: "SYSF 2023",
     description: "Got Distinction at the SYSF 2023",
     date: "2023",
-    image: "/achievements/certificates/portfolio1.png",
+    image: "/achievements/portfolio1.png",
   },
 ];
 
