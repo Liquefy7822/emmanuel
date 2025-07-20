@@ -16,10 +16,10 @@ interface Achievement {
 const achievements: Achievement[] = [
   // Example achievement - you can add more
   {
-    title: "Example Achievement",
-    description: "Description of your achievement",
-    date: "2025",
-    image: "/achievements/certificates/example-cert.png", // Add your certificate images to the achievements/certificates folder
+    title: "SYSF 2023",
+    description: "DGot Distinction at the SYSF 2023",
+    date: "2023",
+    image: "/achievements/certificates/portfolio1.png", // Add your certificate images to the achievements/certificates folder
   },
 ];
 
