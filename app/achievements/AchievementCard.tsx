@@ -8,9 +8,10 @@ interface AchievementCardProps {
   description: string;
   date: string;
   image?: string;
+  slug?: string;
 }
 
-const AchievementCard = ({ title, description, date, image }: AchievementCardProps) => {
+const AchievementCard = ({ title, description, date, image, slug }: AchievementCardProps) => {
   const [imgSrc, setImgSrc] = useState(image);
   const [hasError, setHasError] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
@@ -61,9 +62,13 @@ const AchievementCard = ({ title, description, date, image }: AchievementCardPro
         </div>
         <p className="text-gray-600 dark:text-gray-300 mb-4">{description}</p>
         <div className="flex justify-end">
-          <button className="text-sm font-medium text-blue-600 hover:text-blue-500 dark:text-blue-400 dark:hover:text-blue-300 transition-colors">
+          <a 
+            href={`/achievements/${slug || '#'}`}
+            className="text-sm font-medium text-blue-600 hover:text-blue-500 dark:text-blue-400 dark:hover:text-blue-300 transition-colors"
+            aria-label={`View details about ${title}`}
+          >
             View Details →
-          </button>
+          </a>
         </div>
       </div>
     </div>

@@ -1,30 +1,23 @@
 import { Metadata } from "next";
 import AchievementCard from "./AchievementCard";
+import { getAllAchievements, type AchievementPost } from "app/lib/achievements";
 
 export const metadata: Metadata = {
   title: "Achievements | Emmanuel",
   description: "My professional achievements and certifications",
 };
 
-interface Achievement {
-  title: string;
-  description: string;
-  date: string;
-  image?: string;
+// This function tells Next.js at build time what pages to generate
+export async function generateStaticParams() {
+  const achievements = getAllAchievements();
+  return achievements.map((achievement) => ({
+    slug: achievement.slug,
+  }));
 }
 
-const achievements: Achievement[] = [
-  {
-    title: "SYSF 2023",
-    description: "Got Distinction at the SYSF 2023",
-    date: "2023",
-    image: "/achievements/portfolio1.png",
-  },
-];
-
-
-
 export default function Achievements() {
+  const achievements = getAllAchievements();
+  
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
@@ -38,13 +31,14 @@ export default function Achievements() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {achievements.map((achievement, index) => (
+          {achievements.map((achievement: AchievementPost) => (
             <AchievementCard
-              key={index}
-              title={achievement.title}
-              description={achievement.description}
-              date={achievement.date}
-              image={achievement.image}
+              key={achievement.slug}
+              title={achievement.metadata.title}
+              description={achievement.metadata.description}
+              date={achievement.metadata.date}
+              image={achievement.metadata.image}
+              slug={achievement.slug}
             />
           ))}
         </div>
