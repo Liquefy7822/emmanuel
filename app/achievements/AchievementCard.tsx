@@ -54,9 +54,9 @@ const AchievementCard = ({ title, description, date, image, slug }: AchievementC
         )}
       </div>
       <div className="p-6">
-        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 mb-2">
-          <h2 className="text-xl font-bold text-gray-900 dark:text-white flex-1">{title}</h2>
-          <span className="whitespace-nowrap px-2.5 py-0.5 rounded-full text-xs sm:text-sm font-medium bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200">
+        <div className="flex flex-col gap-2 mb-3">
+          <h2 className="text-xl font-bold text-gray-900 dark:text-white">{title}</h2>
+          <span className="self-start px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200">
             {date}
           </span>
         </div>
