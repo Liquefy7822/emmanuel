@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Dialog } from '@headlessui/react';
 import { AnimatePresence, motion } from 'framer-motion';
 import Image from 'next/image';
 
@@ -49,24 +48,37 @@ export function Lightbox({ isOpen, onClose, images, initialIndex }: LightboxProp
 
   if (!isOpen) return null;
 
+  // Close on escape key
+  useEffect(() => {
+    if (!isOpen) return;
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        onClose();
+      } else if (e.key === 'ArrowLeft') {
+        goToPrevious();
+      } else if (e.key === 'ArrowRight') {
+        goToNext();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isOpen, onClose]);
+
+  if (!isOpen) return null;
+
   return (
     <AnimatePresence>
-      <Dialog
-        as="div"
-        className="fixed inset-0 z-50 overflow-y-auto"
-        onClose={onClose}
-        open={isOpen}
-        static
-      >
+      <div className="fixed inset-0 z-50 overflow-y-auto">
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          className="fixed inset-0 bg-black/90"
+          onClick={onClose}
+        />
         <div className="min-h-screen px-4 text-center">
-          <Dialog.Overlay 
-            as={motion.div}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-black/90"
-            onClick={onClose}
-          />
           
           <span className="inline-block h-screen align-middle" aria-hidden="true">
             &#8203;
@@ -176,7 +188,7 @@ export function Lightbox({ isOpen, onClose, images, initialIndex }: LightboxProp
             </div>
           </div>
         </div>
-      </Dialog>
+      </div>
     </AnimatePresence>
   );
 }
